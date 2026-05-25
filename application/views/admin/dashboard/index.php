@@ -167,105 +167,207 @@
 
     <!-- leader sementara -->
 
-    <div
-    class="row">
-
-    <?php foreach(
-        $leader
-        as $k
-    ):
-
-    $juara =
-    $this->db
-    ->select('
-        guru.nama_guru,
-        guru.foto,
-        COUNT(voting.id_guru)
-        as total_vote
-    ')
-    ->from('voting')
-    ->join(
-        'guru',
-        'guru.id_guru =
-        voting.id_guru'
-    )
-    ->where(
-        'id_kriteria',
-        $k->id_kriteria
-    )
-    ->group_by(
-        'voting.id_guru'
-    )
-    ->order_by(
-        'total_vote',
-        'DESC'
-    )
-    ->limit(1)
-    ->get()
-    ->row();
-
-    ?>
+    <div class="card shadow mb-4">
 
     <div
-    class="col-md-4 mb-4">
+    class="card-header py-3">
+
+        <h5
+        class="m-0 font-weight-bold
+        text-primary">
+
+            🏆 Leaderboard Awarding
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div class="row">
+
+        <?php foreach(
+            $leader as $k
+        ):
+
+        $ranking =
+        $this->db
+        ->select('
+            guru.nama_guru,
+            guru.foto,
+            COUNT(voting.id_guru)
+            as total_vote
+        ')
+        ->from('voting')
+        ->join(
+            'guru',
+            'guru.id_guru =
+            voting.id_guru'
+        )
+        ->where(
+            'voting.id_kriteria',
+            $k->id_kriteria
+        )
+        ->group_by(
+            'voting.id_guru'
+        )
+        ->order_by(
+            'total_vote',
+            'DESC'
+        )
+        ->limit(5)
+        ->get()
+        ->result();
+
+        ?>
 
         <div
-        class="card shadow">
+        class="col-lg-6 mb-4">
 
             <div
-            class="card-header">
+            class="card border-left-warning shadow h-100">
 
-                <?= $k->nama_kriteria; ?>
+                <div
+                class="card-header">
 
-            </div>
+                    <b>
 
-            <div
-            class="card-body text-center">
+                        <?= $k
+                        ->nama_kriteria; ?>
 
-                <?php if(
-                    $juara
-                ): ?>
+                    </b>
 
-                    <img
-                    src="<?= base_url('uploads/guru/'.$juara->foto); ?>"
-                    width="100"
-                    class="rounded-circle img-thumbnail mb-3">
+                </div>
 
-                    <h5>
+                <div
+                class="card-body">
 
-                        🥇
-                        <?= $juara->nama_guru; ?>
+                    <?php if(
+                        $ranking
+                    ): ?>
 
-                    </h5>
+                        <?php
+                        foreach(
+                            $ranking
+                            as $i => $r
+                        ):
+                        ?>
 
-                    <span
-                    class="badge badge-success">
+                        <div
+                        class="d-flex align-items-center mb-3">
 
-                        <?= $juara->total_vote; ?>
+                            <div
+                            class="mr-3">
 
-                        suara
+                                <span
+                                class="badge badge-warning p-2">
 
-                    </span>
+                                    #<?= $i+1; ?>
 
-                <?php else: ?>
+                                </span>
 
-                    <div
-                    class="alert alert-warning">
+                            </div>
 
-                        Belum ada vote
+                            <div
+                            class="foto-ranking">
 
-                    </div>
+                                <img
+                                src="<?= base_url(
+                                'uploads/guru/'
+                                .$r->foto
+                                ); ?>"
 
-                <?php endif; ?>
+                                class="foto-ranking-img">
+
+                            </div>
+
+                            <div
+                            class="flex-grow-1 ml-3">
+
+                                <b>
+
+                                    <?= $r
+                                    ->nama_guru; ?>
+
+                                </b>
+
+                                <br>
+
+                                <small
+                                class="text-muted">
+
+                                    <?= $r
+                                    ->total_vote; ?>
+
+                                    suara
+
+                                </small>
+
+                                <div
+                                class="progress mt-1">
+
+                                    <div
+                                    class="progress-bar bg-success"
+
+                                    style="width:
+                                    <?= min(
+                                        100,
+                                        $r->total_vote
+                                        * 2
+                                    ); ?>%">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <?php endforeach; ?>
+
+                    <?php else: ?>
+
+                        <div
+                        class="alert alert-warning">
+
+                            Belum ada voting
+
+                        </div>
+
+                    <?php endif; ?>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+        <?php endforeach; ?>
 
-    <?php endforeach; ?>
+        </div>
 
     </div>
 
 </div>
+
+
+
+<style>
+
+.foto-ranking{
+    width:55px;
+    height:55px;
+    border-radius:12px;
+    overflow:hidden;
+    border:2px solid #eee;
+    background:#fff;
+}
+
+.foto-ranking-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+</style>
