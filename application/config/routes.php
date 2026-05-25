@@ -82,6 +82,15 @@ $route['admin/monitoring-voting/reset-all'] =
 'admin/monitoring_voting/reset_all';
 $route['admin/hasil-voting'] =
 'admin/hasil_voting';
+
+$route['admin/siswa/import'] =
+'admin/siswa/import';
+
+$route['admin/siswa/template'] =
+'admin/siswa/template';
+$route['admin/guru/import-foto'] =
+'admin/guru/import_foto';
+
 //siswa
 $route['siswa/dashboard'] =
 'siswa/dashboard';

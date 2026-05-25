@@ -17,7 +17,7 @@ class Kelas_model extends CI_Model
             )
             ->order_by(
                 'kelas.id_kelas',
-                'DESC'
+                'ASC'
             )
             ->get()
             ->result();

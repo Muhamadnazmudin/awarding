@@ -8,7 +8,16 @@
         Data Guru
 
         <div class="float-right">
+        <button
+class="btn btn-warning btn-sm"
+data-toggle="modal"
+data-target="#modalImportFoto">
 
+    <i class="fas fa-images"></i>
+
+    Upload Foto ZIP
+
+</button>
             <a
             href="<?= site_url('admin/guru/template'); ?>"
             class="btn btn-success btn-sm">
@@ -585,3 +594,85 @@ function toggleJurusan(value)
 </div>
 
 <?php endif; ?>
+<div
+class="modal fade"
+id="modalImportFoto">
+
+    <div class="modal-dialog">
+
+        <form
+        action="<?= site_url('admin/guru/import-foto'); ?>"
+        method="post"
+        enctype="multipart/form-data">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5>
+
+                        Upload Foto Guru (ZIP)
+
+                    </h5>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div
+                    class="alert alert-info">
+
+                        <b>Format:</b>
+
+                        <hr>
+
+                        Nama file foto
+                        harus menggunakan
+
+                        <b>NIK Guru</b>
+
+                        <br>
+
+                        contoh:
+
+                        <br>
+
+                        <small>
+
+                        320101010101.jpg
+
+                        <br>
+
+                        320101010102.png
+
+                        </small>
+
+                    </div>
+
+                    <input
+                    type="file"
+                    name="zip_file"
+                    class="form-control"
+                    accept=".zip"
+                    required>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                    class="btn btn-primary">
+
+                        Upload Foto
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

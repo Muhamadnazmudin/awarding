@@ -14,7 +14,8 @@
 
     <div class="card-header py-3">
 
-        <h6 class="m-0 font-weight-bold text-primary">
+        <h6
+        class="m-0 font-weight-bold text-primary">
 
             Monitoring Voting
 
@@ -44,6 +45,7 @@
                 <thead>
 
                     <tr>
+
                         <th>No</th>
                         <th>Foto</th>
                         <th>Nama</th>
@@ -54,6 +56,7 @@
                         <th width="160">
                             Aksi
                         </th>
+
                     </tr>
 
                 </thead>
@@ -67,29 +70,23 @@
                     $siswa
                     as $s
                 ):
-
-                $jumlah_vote =
-                $this->db
-                ->where(
-                    'id_siswa',
-                    $s->id_siswa
-                )
-                ->count_all_results(
-                    'voting'
-                );
-
                 ?>
 
                 <tr>
 
                     <td>
+
                         <?= $no++; ?>
+
                     </td>
 
                     <td width="80">
 
                         <img
-                        src="<?= base_url('uploads/siswa/'.$s->foto); ?>"
+                        src="<?= base_url(
+                        'uploads/siswa/'
+                        .$s->foto
+                        ); ?>"
                         width="60"
                         class="img-thumbnail">
 
@@ -117,10 +114,7 @@
 
                         <b>
 
-                        <?= $jumlah_vote; ?>
-
-                        /
-                        <?= $total_kriteria; ?>
+                        <?= $s->progress; ?>
 
                         </b>
 
@@ -129,9 +123,12 @@
                     <td>
 
                         <?php if(
-                            $jumlah_vote
+                            $s->jumlah_vote
                             >=
-                            $total_kriteria
+                            $s->total_kriteria
+                            &&
+                            $s->total_kriteria
+                            > 0
                         ): ?>
 
                             <span
@@ -142,7 +139,7 @@
                             </span>
 
                         <?php elseif(
-                            $jumlah_vote
+                            $s->jumlah_vote
                             > 0
                         ): ?>
 
@@ -169,7 +166,10 @@
                     <td>
 
                         <a
-                        href="<?= site_url('admin/monitoring-voting/reset/'.$s->id_siswa); ?>"
+                        href="<?= site_url(
+                        'admin/monitoring-voting/reset/'
+                        .$s->id_siswa
+                        ); ?>"
                         class="btn btn-danger btn-sm"
                         onclick="return confirm(
                         'Reset voting siswa ini?'

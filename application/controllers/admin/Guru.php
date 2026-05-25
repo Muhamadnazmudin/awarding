@@ -657,6 +657,245 @@ class Guru extends CI_Controller
         'admin/guru'
     );
 }
+public function import_foto()
+{
+    if(
+        empty(
+            $_FILES['zip_file']
+            ['name']
+        )
+    )
+    {
+        redirect(
+            'admin/guru'
+        );
+    }
+
+    $config['upload_path'] =
+    './uploads/temp/';
+
+    $config['allowed_types'] =
+    'zip';
+
+    $config['encrypt_name'] =
+    TRUE;
+
+    $this->upload
+    ->initialize($config);
+
+    if(
+        !$this->upload
+        ->do_upload(
+            'zip_file'
+        )
+    )
+    {
+        die(
+            $this->upload
+            ->display_errors()
+        );
+    }
+
+    $upload =
+    $this->upload
+    ->data();
+
+    $zip_path =
+    './uploads/temp/'
+    .$upload['file_name'];
+
+    $extract_path =
+    './uploads/temp/guru_'
+    .time();
+
+    if(
+        !is_dir(
+            $extract_path
+        )
+    )
+    {
+        mkdir(
+            $extract_path,
+            0777,
+            true
+        );
+    }
+
+    $zip =
+    new ZipArchive();
+
+    if(
+        $zip->open(
+            $zip_path
+        )
+        === TRUE
+    )
+    {
+        $zip->extractTo(
+            $extract_path
+        );
+
+        $zip->close();
+    }
+
+    $files =
+    scandir(
+        $extract_path
+    );
+
+    $berhasil = 0;
+    $gagal = 0;
+    $error_rows = [];
+
+    foreach(
+        $files
+        as $file
+    )
+    {
+        if(
+            $file == '.'
+            ||
+            $file == '..'
+        )
+        {
+            continue;
+        }
+
+        $ext =
+        strtolower(
+            pathinfo(
+                $file,
+                PATHINFO_EXTENSION
+            )
+        );
+
+        if(
+            !in_array(
+                $ext,
+                [
+                    'jpg',
+                    'jpeg',
+                    'png'
+                ]
+            )
+        )
+        {
+            continue;
+        }
+
+        // ambil nik dari nama file
+        $nik =
+        pathinfo(
+            $file,
+            PATHINFO_FILENAME
+        );
+
+        $guru =
+        $this->db
+        ->where(
+            'nik',
+            $nik
+        )
+        ->get('guru')
+        ->row();
+
+        if(!$guru)
+        {
+            $error_rows[] =
+            'NIK '.$nik.
+            ' tidak ditemukan';
+
+            $gagal++;
+            continue;
+        }
+
+        $new_name =
+        time().'_'.
+        rand(111,999).
+        '.'.$ext;
+
+        copy(
+            $extract_path
+            .'/'.$file,
+
+            './uploads/guru/'
+            .$new_name
+        );
+
+        // hapus foto lama
+        if(
+            $guru->foto !=
+            'default.png'
+        )
+        {
+            @unlink(
+                './uploads/guru/'
+                .$guru->foto
+            );
+        }
+
+        $this->db
+        ->where(
+            'id_guru',
+            $guru->id_guru
+        )
+        ->update(
+            'guru',
+            [
+                'foto' =>
+                $new_name
+            ]
+        );
+
+        $berhasil++;
+    }
+
+    // cleanup
+    @unlink($zip_path);
+
+    array_map(
+        'unlink',
+        glob(
+            $extract_path
+            .'/*'
+        )
+    );
+
+    @rmdir(
+        $extract_path
+    );
+
+    $message =
+    'Upload foto berhasil :
+    '.$berhasil.
+    ' guru,
+    gagal :
+    '.$gagal;
+
+    if(
+        !empty(
+            $error_rows
+        )
+    )
+    {
+        $message .=
+        '<br><br>'
+        .implode(
+            '<br>',
+            $error_rows
+        );
+    }
+
+    $this->session
+    ->set_flashdata(
+        'success',
+        $message
+    );
+
+    redirect(
+        'admin/guru'
+    );
+}
     public function template()
 {
     $spreadsheet =

@@ -15,7 +15,7 @@ class Guru_model extends CI_Model
             )
             ->order_by(
                 'guru.id_guru',
-                'DESC'
+                'ASC'
             )
             ->get()
             ->result();

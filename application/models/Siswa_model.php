@@ -26,7 +26,7 @@ class Siswa_model extends CI_Model
             )
             ->order_by(
                 'id_siswa',
-                'DESC'
+                'ASC'
             )
             ->get()
             ->result();

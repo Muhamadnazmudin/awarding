@@ -16,8 +16,24 @@
             </button>
 
         </h6>
+<a
+href="<?= site_url('admin/siswa/template'); ?>"
+class="btn btn-success btn-sm">
 
+    Download Template
+
+</a>
+
+<button
+class="btn btn-info btn-sm"
+data-toggle="modal"
+data-target="#modalImport">
+
+    Import Excel
+
+</button>
     </div>
+    
 <?php if($this->session->flashdata('error')): ?>
 
 <div class="alert alert-danger">
@@ -442,3 +458,61 @@ function resetPassword(id)
 }
 
 </script>
+<div
+class="modal fade"
+id="modalImport">
+
+    <div class="modal-dialog">
+
+        <form
+        action="<?= site_url('admin/siswa/import'); ?>"
+        method="post"
+        enctype="multipart/form-data">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+
+                    <h5>
+                        Import Siswa
+                    </h5>
+
+                </div>
+
+                <div class="modal-body">
+
+                    <div
+                    class="alert alert-info">
+
+                        Jurusan & kelas
+                        harus sama persis
+                        dengan database.
+
+                    </div>
+
+                    <input
+                    type="file"
+                    name="file"
+                    class="form-control"
+                    required>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button
+                    class="btn btn-primary">
+
+                        Import
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
