@@ -18,115 +18,182 @@ class Voting extends CI_Controller
         }
     }
 
+
     public function index()
-{
-    $id_siswa =
-    $this->session
-    ->userdata(
-        'id_siswa'
-    );
+    {
+        $id_siswa =
+        $this->session
+        ->userdata(
+            'id_siswa'
+        );
 
-    // data siswa
-    $siswa =
-    $this->db
-    ->where(
-        'id_siswa',
-        $id_siswa
-    )
-    ->get('siswa')
-    ->row();
+        // cek pengaturan voting
+        $pengaturan =
+        $this->db
+        ->get(
+            'pengaturan_voting'
+        )
+        ->row();
 
-    $data['title'] =
-    'Voting Guru';
+        // jika voting ditutup
+        if(
+            !$pengaturan
+            ||
+            $pengaturan
+            ->voting_status
+            != 'buka'
+        )
+        {
+            $this->session
+            ->set_flashdata(
+                'error',
+                'Voting belum dibuka'
+            );
 
-    // FILTER KRITERIA
-    $this->db
-    ->where(
-        'status',
-        'aktif'
-    );
+            redirect(
+                'siswa/dashboard'
+            );
+        }
 
-    $this->db->group_start();
+        // data siswa
+        $siswa =
+        $this->db
+        ->where(
+            'id_siswa',
+            $id_siswa
+        )
+        ->get('siswa')
+        ->row();
 
-    // guru umum
-    $this->db->where(
-        'tipe_guru',
-        'umum'
-    );
+        $data['title'] =
+        'Voting Guru';
 
-    // semua guru
-    $this->db->or_where(
-        'tipe_guru',
-        'semua'
-    );
+        $data['pengaturan'] =
+        $pengaturan;
 
-    // jurusan siswa
-    $this->db->or_group_start();
+        // filter kriteria
+        $this->db
+        ->where(
+            'status',
+            'aktif'
+        );
 
-    $this->db->where(
-        'tipe_guru',
-        'jurusan'
-    );
+        $this->db
+        ->group_start();
 
-    $this->db->where(
-        'id_jurusan',
-        $siswa
-        ->id_jurusan
-    );
+        // guru umum
+        $this->db
+        ->where(
+            'tipe_guru',
+            'umum'
+        );
 
-    $this->db
-    ->group_end();
+        // semua guru
+        $this->db
+        ->or_where(
+            'tipe_guru',
+            'semua'
+        );
 
-    $this->db
-    ->group_end();
+        // guru jurusan siswa
+        $this->db
+        ->or_group_start();
 
-    $data['kriteria'] =
-    $this->db
-    ->get(
-        'kriteria_penghargaan'
-    )
-    ->result();
+        $this->db
+        ->where(
+            'tipe_guru',
+            'jurusan'
+        );
 
+        $this->db
+        ->where(
+            'id_jurusan',
+            $siswa
+            ->id_jurusan
+        );
 
-    $data['voted'] =
-    $this->db
-    ->where(
-        'id_siswa',
-        $id_siswa
-    )
-    ->get('voting')
-    ->result_array();
+        $this->db
+        ->group_end();
 
-    $this->load->view(
-        'siswa/template/header',
-        $data
-    );
+        $this->db
+        ->group_end();
 
-    $this->load->view(
-        'siswa/template/sidebar'
-    );
+        $data['kriteria'] =
+        $this->db
+        ->get(
+            'kriteria_penghargaan'
+        )
+        ->result();
 
-    $this->load->view(
-        'siswa/template/topbar'
-    );
+        // voting siswa
+        $data['voted'] =
+        $this->db
+        ->where(
+            'id_siswa',
+            $id_siswa
+        )
+        ->get(
+            'voting'
+        )
+        ->result_array();
 
-    $this->load->view(
-        'siswa/voting/index',
-        $data
-    );
+        $this->load->view(
+            'siswa/template/header',
+            $data
+        );
 
-    $this->load->view(
-        'siswa/template/footer'
-    );
+        $this->load->view(
+            'siswa/template/sidebar'
+        );
 
-    $this->load->view(
-        'siswa/template/script'
-    );
-}
+        $this->load->view(
+            'siswa/template/topbar'
+        );
+
+        $this->load->view(
+            'siswa/voting/index',
+            $data
+        );
+
+        $this->load->view(
+            'siswa/template/footer'
+        );
+
+        $this->load->view(
+            'siswa/template/script'
+        );
+    }
 
 
     public function detail($id_kriteria)
     {
+        // cek voting buka/tutup
+        $pengaturan =
+        $this->db
+        ->get(
+            'pengaturan_voting'
+        )
+        ->row();
+
+        if(
+            !$pengaturan
+            ||
+            $pengaturan
+            ->voting_status
+            != 'buka'
+        )
+        {
+            $this->session
+            ->set_flashdata(
+                'error',
+                'Voting belum dibuka'
+            );
+
+            redirect(
+                'siswa/dashboard'
+            );
+        }
+
         $id_siswa =
         $this->session
         ->userdata(
@@ -155,6 +222,50 @@ class Voting extends CI_Controller
         )
         ->row();
 
+        if(!$kriteria)
+        {
+            redirect(
+                'siswa/voting'
+            );
+        }
+
+        // pastikan siswa hanya bisa akses kriteria miliknya
+        $boleh = false;
+
+        if(
+            $kriteria
+            ->tipe_guru
+            == 'umum'
+            ||
+            $kriteria
+            ->tipe_guru
+            == 'semua'
+        )
+        {
+            $boleh = true;
+        }
+
+        if(
+            $kriteria
+            ->tipe_guru
+            == 'jurusan'
+            &&
+            $kriteria
+            ->id_jurusan
+            == $siswa
+            ->id_jurusan
+        )
+        {
+            $boleh = true;
+        }
+
+        if(!$boleh)
+        {
+            redirect(
+                'siswa/voting'
+            );
+        }
+
         // cek sudah voting
         $cek =
         $this->db
@@ -166,7 +277,9 @@ class Voting extends CI_Controller
             'id_kriteria',
             $id_kriteria
         )
-        ->get('voting')
+        ->get(
+            'voting'
+        )
         ->row();
 
         if($cek)
@@ -219,14 +332,16 @@ class Voting extends CI_Controller
 
             if(
                 !empty(
-                    $kriteria->jk
+                    $kriteria
+                    ->jk
                 )
             )
             {
                 $this->db
                 ->where(
                     'jk',
-                    $kriteria->jk
+                    $kriteria
+                    ->jk
                 );
             }
         }
@@ -236,14 +351,16 @@ class Voting extends CI_Controller
         {
             if(
                 !empty(
-                    $kriteria->jk
+                    $kriteria
+                    ->jk
                 )
             )
             {
                 $this->db
                 ->where(
                     'jk',
-                    $kriteria->jk
+                    $kriteria
+                    ->jk
                 );
             }
         }
@@ -289,19 +406,69 @@ class Voting extends CI_Controller
 
     public function store()
     {
+        // proteksi voting ditutup
+        $pengaturan =
+        $this->db
+        ->get(
+            'pengaturan_voting'
+        )
+        ->row();
+
+        if(
+            !$pengaturan
+            ||
+            $pengaturan
+            ->voting_status
+            != 'buka'
+        )
+        {
+            redirect(
+                'siswa/dashboard'
+            );
+        }
+
+        $id_siswa =
+        $this->session
+        ->userdata(
+            'id_siswa'
+        );
+
+        $id_kriteria =
+        $this->input
+        ->post(
+            'id_kriteria'
+        );
+
+        // anti duplicate vote
+        $cek =
+        $this->db
+        ->where(
+            'id_siswa',
+            $id_siswa
+        )
+        ->where(
+            'id_kriteria',
+            $id_kriteria
+        )
+        ->get(
+            'voting'
+        )
+        ->row();
+
+        if($cek)
+        {
+            redirect(
+                'siswa/voting'
+            );
+        }
+
         $data = [
 
             'id_siswa' =>
-            $this->session
-            ->userdata(
-                'id_siswa'
-            ),
+            $id_siswa,
 
             'id_kriteria' =>
-            $this->input
-            ->post(
-                'id_kriteria'
-            ),
+            $id_kriteria,
 
             'id_guru' =>
             $this->input
