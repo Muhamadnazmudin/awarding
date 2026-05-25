@@ -431,14 +431,11 @@ class="timeline-box text-center">
 
 <h2>
 
-Jadwal Voting
+📅 Jadwal Voting
 
 </h2>
 
-<hr
-style="
-background:white;
-">
+<hr style="background:white;">
 
 <p>
 
@@ -476,6 +473,90 @@ $pengaturan
 
 </p>
 
+
+<!-- COUNTDOWN -->
+
+<div class="mt-4">
+
+<h4 class="mb-4">
+
+⏳ Countdown Voting
+
+</h4>
+
+<div
+class="row justify-content-center">
+
+<div class="col-3 col-md-2">
+
+<div
+class="bg-white text-dark rounded-lg py-3 shadow">
+
+<h2 id="days">
+0
+</h2>
+
+<small>Hari</small>
+
+</div>
+
+</div>
+
+<div class="col-3 col-md-2">
+
+<div
+class="bg-white text-dark rounded-lg py-3 shadow">
+
+<h2 id="hours">
+0
+</h2>
+
+<small>Jam</small>
+
+</div>
+
+</div>
+
+<div class="col-3 col-md-2">
+
+<div
+class="bg-white text-dark rounded-lg py-3 shadow">
+
+<h2 id="minutes">
+0
+</h2>
+
+<small>Menit</small>
+
+</div>
+
+</div>
+
+<div class="col-3 col-md-2">
+
+<div
+class="bg-white text-dark rounded-lg py-3 shadow">
+
+<h2 id="seconds">
+0
+</h2>
+
+<small>Detik</small>
+
+</div>
+
+</div>
+
+</div>
+
+<p
+id="statusVoting"
+class="mt-4 font-weight-bold">
+
+</p>
+
+</div>
+
 </div>
 
 </div>
@@ -503,6 +584,148 @@ Terfavorit
 
 </footer>
 
+<script>
 
+const endDate =
+new Date(
+'<?= $pengaturan->tanggal_selesai; ?> 23:59:59'
+).getTime();
+
+const startDate =
+new Date(
+'<?= $pengaturan->tanggal_mulai; ?> 00:00:00'
+).getTime();
+
+const timer =
+setInterval(function(){
+
+    const now =
+    new Date().getTime();
+
+    const status =
+    document.getElementById(
+        'statusVoting'
+    );
+
+    // BELUM DIMULAI
+    if(now < startDate)
+    {
+        status.innerHTML =
+        '🟡 Voting belum dimulai';
+
+        return;
+    }
+
+    const distance =
+    endDate - now;
+
+    // SUDAH SELESAI
+    if(distance < 0)
+    {
+        clearInterval(timer);
+
+        document.getElementById(
+            'days'
+        ).innerHTML = 0;
+
+        document.getElementById(
+            'hours'
+        ).innerHTML = 0;
+
+        document.getElementById(
+            'minutes'
+        ).innerHTML = 0;
+
+        document.getElementById(
+            'seconds'
+        ).innerHTML = 0;
+
+        status.innerHTML =
+        '🔴 Voting telah berakhir';
+
+        return;
+    }
+
+    const days =
+    Math.floor(
+        distance /
+        (
+            1000 * 60 * 60 * 24
+        )
+    );
+
+    const hours =
+    Math.floor(
+        (
+            distance %
+            (
+                1000 * 60 * 60 * 24
+            )
+        )
+        /
+        (
+            1000 * 60 * 60
+        )
+    );
+
+    const minutes =
+    Math.floor(
+        (
+            distance %
+            (
+                1000 * 60 * 60
+            )
+        )
+        /
+        (
+            1000 * 60
+        )
+    );
+
+    const seconds =
+    Math.floor(
+        (
+            distance %
+            (
+                1000 * 60
+            )
+        )
+        / 1000
+    );
+
+    document
+    .getElementById(
+        'days'
+    )
+    .innerHTML =
+    days;
+
+    document
+    .getElementById(
+        'hours'
+    )
+    .innerHTML =
+    hours;
+
+    document
+    .getElementById(
+        'minutes'
+    )
+    .innerHTML =
+    minutes;
+
+    document
+    .getElementById(
+        'seconds'
+    )
+    .innerHTML =
+    seconds;
+
+    status.innerHTML =
+    '🟢 Voting sedang berlangsung';
+
+},1000);
+
+</script>
 </body>
 </html>
