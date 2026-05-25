@@ -5,7 +5,21 @@
         Hasil Voting Guru
 
     </h1>
+<a
+href="<?= site_url(
+'admin/hasil-voting/export-pdf'
+); ?>"
 
+class="btn btn-danger mb-4">
+
+    <i
+    class="fas fa-file-pdf">
+
+    </i>
+
+    Export PDF
+
+</a>
     <div class="row">
 
     <?php foreach(

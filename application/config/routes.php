@@ -90,6 +90,8 @@ $route['admin/siswa/template'] =
 'admin/siswa/template';
 $route['admin/guru/import-foto'] =
 'admin/guru/import_foto';
+$route['admin/hasil-voting/export-pdf'] =
+'admin/Hasil_voting/export_pdf';
 
 //siswa
 $route['siswa/dashboard'] =
