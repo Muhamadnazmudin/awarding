@@ -208,7 +208,7 @@
 
             <div class="login-footer">
 
-                © <?php echo date('Y'); ?> nazmudev
+                © <?php echo date('Y'); ?> Kocienten
 
             </div>
 
