@@ -105,7 +105,17 @@ $route['admin/user/delete/(:num)']
 = 'admin/user/delete/$1';
 $route['admin/user/update']
 = 'admin/user/update';
+$route['admin/tahun']
+= 'admin/tahun/index';
 
+$route['admin/tahun/store']
+= 'admin/tahun/store';
+
+$route['admin/tahun/update']
+= 'admin/tahun/update';
+
+$route['admin/tahun/delete/(:num)']
+= 'admin/tahun/delete/$1';
 //siswa
 $route['siswa/dashboard'] =
 'siswa/dashboard';
