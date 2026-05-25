@@ -150,7 +150,24 @@ Voting
         <span>Hasil Voting</span>
     </a>
 </li>
+<li class="nav-item">
 
+    <a
+    class="nav-link"
+    href="<?= site_url('admin/user'); ?>">
+
+        <i
+        class="fas fa-users-cog">
+
+        </i>
+
+        <span>
+            Management User
+        </span>
+
+    </a>
+
+</li>
 <hr class="sidebar-divider">
 
 <li class="nav-item">

@@ -92,6 +92,19 @@ $route['admin/guru/import-foto'] =
 'admin/guru/import_foto';
 $route['admin/hasil-voting/export-pdf'] =
 'admin/Hasil_voting/export_pdf';
+$route['admin/user']
+= 'admin/user/index';
+
+$route['admin/user/store']
+= 'admin/user/store';
+
+$route['admin/user/reset-password/(:num)']
+= 'admin/user/reset_password/$1';
+
+$route['admin/user/delete/(:num)']
+= 'admin/user/delete/$1';
+$route['admin/user/update']
+= 'admin/user/update';
 
 //siswa
 $route['siswa/dashboard'] =
