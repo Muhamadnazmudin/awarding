@@ -10,9 +10,7 @@ name="viewport"
 content="width=device-width, initial-scale=1">
 
 <title>
-
 <?= $title; ?>
-
 </title>
 
 <link
@@ -26,11 +24,10 @@ rel="stylesheet">
 <style>
 
 body{
-    background:
-    #f5f7fb;
-    font-family:
-    'Segoe UI',
-    sans-serif;
+    background:#f5f7fb;
+    font-family:'Segoe UI',sans-serif;
+    overflow-x:hidden;
+    color:#2d3748;
 }
 
 /* HERO */
@@ -43,86 +40,103 @@ body{
     #4e73df
     );
     color:white;
-    padding:
-    100px 20px;
-    position:
-    relative;
+    position:relative;
     overflow:hidden;
+    padding:90px 0 70px;
 }
 
 .hero::before{
     content:'';
     position:absolute;
-    width:400px;
-    height:400px;
+    width:500px;
+    height:500px;
+    border-radius:50%;
     background:
-    rgba(
-        255,
-       255,
-       255,
-        .08
-    );
-    border-radius:
-    50%;
-    top:-150px;
-    right:-150px;
+    rgba(255,255,255,.06);
+    top:-180px;
+    right:-180px;
+}
+
+.hero-badge{
+    background:
+    rgba(255,255,255,.12);
+    display:inline-block;
+    padding:10px 18px;
+    border-radius:50px;
+    font-size:14px;
+    margin-bottom:20px;
+    backdrop-filter:blur(10px);
+    font-weight:600;
 }
 
 .hero h1{
-    font-size:52px;
+    font-size:56px;
     font-weight:800;
+    line-height:1.1;
+    margin-bottom:20px;
 }
 
-.hero p{
+.hero-desc{
     font-size:20px;
+    line-height:1.9;
     opacity:.95;
+    max-width:700px;
+}
+
+/* BUTTON LOGIN */
+
+.login-wrapper{
+    text-align:center;
+    margin-top:35px;
 }
 
 .btn-login{
-    background:white;
-    color:#224abe;
-    border-radius:
-    50px;
-    padding:
-    14px 35px;
-    font-weight:bold;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    background:#0d6efd;
+    color:white !important;
+    border:none;
+    border-radius:60px;
+    padding:14px 28px;
+    font-weight:700;
+    font-size:17px;
+    text-decoration:none;
+    box-shadow:
+    0 10px 25px
+    rgba(13,110,253,.25);
     transition:.3s;
+    width:auto;
 }
 
 .btn-login:hover{
-    transform:
-    translateY(-2px);
-    box-shadow:
-    0 10px 25px
-    rgba(
-        0,0,0,.15
-    );
+    background:#0b5ed7;
+    transform:translateY(-2px);
+    text-decoration:none;
+    color:white;
 }
 
 /* CARD */
 
 .card-modern{
     border:none;
-    border-radius:
-    25px;
+    border-radius:25px;
     box-shadow:
     0 10px 30px
-    rgba(
-        0,0,0,.08
-    );
+    rgba(0,0,0,.08);
 }
 
 .section-title{
-    font-size:34px;
-    font-weight:700;
+    font-size:38px;
+    font-weight:800;
     color:#224abe;
 }
 
 .icon-box{
-    width:80px;
-    height:80px;
-    border-radius:
-    20px;
+    width:75px;
+    height:75px;
+    border-radius:20px;
     background:
     linear-gradient(
     135deg,
@@ -134,7 +148,7 @@ body{
     justify-content:center;
     margin:auto;
     color:white;
-    font-size:30px;
+    font-size:28px;
 }
 
 /* TIMELINE */
@@ -143,33 +157,88 @@ body{
     background:
     linear-gradient(
     135deg,
-    #4e73df,
-    #224abe
+    #224abe,
+    #4e73df
     );
     color:white;
-    border-radius:
-    25px;
-    padding:30px;
+    border-radius:30px;
+    padding:45px 25px;
+}
+
+.count-box{
+    background:white;
+    color:#224abe;
+    border-radius:20px;
+    padding:18px 10px;
+    box-shadow:
+    0 8px 20px
+    rgba(0,0,0,.1);
+}
+
+.count-box h2{
+    font-weight:800;
+    margin:0;
 }
 
 footer{
     background:#224abe;
     color:white;
-    padding:30px;
+    padding:35px;
+    margin-top:50px;
 }
+
+/* MOBILE */
 
 @media(max-width:768px){
 
-.hero h1{
-    font-size:34px;
+.hero{
+    padding:65px 20px 55px;
+    text-align:left;
 }
 
-.hero{
-    text-align:center;
+.hero-badge{
+    font-size:12px;
+}
+
+.hero h1{
+    font-size:38px;
+    line-height:1.15;
+}
+
+.hero-desc{
+    font-size:17px;
+    line-height:1.8;
+}
+
+.btn-login{
+    width:100%;
+    padding:16px;
+    font-size:17px;
 }
 
 .section-title{
     font-size:28px;
+}
+
+.card-modern{
+    border-radius:22px;
+}
+
+.timeline-box{
+    padding:30px 20px;
+}
+
+.count-box{
+    padding:14px 8px;
+    margin-bottom:12px;
+}
+
+.count-box h2{
+    font-size:24px;
+}
+
+.login-wrapper{
+    margin-top:25px;
 }
 
 }
@@ -187,26 +256,25 @@ footer{
 
 <div class="container">
 
-<div class="row align-items-center">
+<div class="row">
 
-<div class="col-lg-7">
+<div class="col-lg-8">
 
-<h5
-class="mb-3">
+<div class="hero-badge">
 
 🎉 HARLAH
 SMK NEGERI 1 CILIMUS
 
-</h5>
+</div>
 
 <h1>
 
-Awarding
-Guru Terfavorit
+Awarding Guru
+Terfavorit
 
 </h1>
 
-<p class="mt-4">
+<p class="hero-desc">
 
 Dalam rangka
 Hari Lahir
@@ -215,50 +283,22 @@ SMK Negeri 1 Cilimus
 </b>,
 
 untuk pertama kalinya
-sejak berdiri
-pada tahun
-<b>2012</b>,
+sejak berdiri pada
+tahun <b>2012</b>,
 
-sekolah
-menyelenggarakan
-kegiatan
+sekolah menyelenggarakan
+
 <b>
-Awarding Guru
-Terfavorit
+Awarding Guru Terfavorit
 </b>
 
-sebagai bentuk
-apresiasi terhadap
-dedikasi,
-inspirasi,
-dan kontribusi
-para pendidik
-dalam membentuk
-generasi unggul.
+sebagai bentuk apresiasi
+kepada para guru atas
+dedikasi, inspirasi,
+dan kontribusi dalam
+membentuk generasi unggul.
 
 </p>
-
-<a
-href="<?= site_url('auth'); ?>"
-class="btn btn-login btn-lg mt-4">
-
-<i class="fas fa-sign-in-alt">
-
-</i>
-
-LOGIN SEKARANG
-
-</a>
-
-</div>
-
-<div
-class="col-lg-5 text-center">
-
-<!-- <img
-src="<?= base_url('assets/img/hero-school.png'); ?>"
-class="img-fluid"
-style="max-height:380px;"> -->
 
 </div>
 
@@ -490,7 +530,7 @@ class="row justify-content-center">
 <div class="col-3 col-md-2">
 
 <div
-class="bg-white text-dark rounded-lg py-3 shadow">
+class="count-box">
 
 <h2 id="days">
 0
@@ -505,7 +545,7 @@ class="bg-white text-dark rounded-lg py-3 shadow">
 <div class="col-3 col-md-2">
 
 <div
-class="bg-white text-dark rounded-lg py-3 shadow">
+class="count-box">
 
 <h2 id="hours">
 0
@@ -520,7 +560,7 @@ class="bg-white text-dark rounded-lg py-3 shadow">
 <div class="col-3 col-md-2">
 
 <div
-class="bg-white text-dark rounded-lg py-3 shadow">
+class="count-box">
 
 <h2 id="minutes">
 0
@@ -535,7 +575,7 @@ class="bg-white text-dark rounded-lg py-3 shadow">
 <div class="col-3 col-md-2">
 
 <div
-class="bg-white text-dark rounded-lg py-3 shadow">
+class="count-box">
 
 <h2 id="seconds">
 0
@@ -554,6 +594,22 @@ id="statusVoting"
 class="mt-4 font-weight-bold">
 
 </p>
+
+<!-- BUTTON LOGIN -->
+
+<div class="login-wrapper">
+
+<a
+href="<?= site_url('auth'); ?>"
+class="btn-login">
+
+<i class="fas fa-sign-in-alt"></i>
+
+<span>LOGIN SEKARANG</span>
+
+</a>
+
+</div>
 
 </div>
 
@@ -727,5 +783,6 @@ setInterval(function(){
 },1000);
 
 </script>
+
 </body>
 </html>
