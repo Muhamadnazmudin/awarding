@@ -163,7 +163,260 @@
 
     </div>
 
+<div class="card shadow mb-4">
 
+    <div
+    class="card-header py-3">
+
+        <h5
+        class="m-0 font-weight-bold text-primary">
+
+            📊 Detail Progress Voting
+            per Kriteria
+
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <div
+        class="table-responsive">
+
+            <table
+            class="table table-bordered">
+
+                <thead
+                class="thead-light">
+
+                    <tr>
+
+                        <th>
+                            Kriteria
+                        </th>
+
+                        <th width="180">
+                            Sudah Voting
+                        </th>
+
+                        <th width="180">
+                            Belum Voting
+                        </th>
+
+                        <th width="220">
+                            Progress
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                <?php foreach(
+    $leader
+    as $k
+):
+
+// =========================
+// TOTAL TARGET SISWA
+// =========================
+
+// guru jurusan
+if(
+    $k->tipe_guru
+    == 'jurusan'
+)
+{
+    $target_siswa =
+    $this->db
+    ->where(
+        'status',
+        'aktif'
+    )
+    ->where(
+        'id_jurusan',
+        $k->id_jurusan
+    )
+    ->count_all_results(
+        'siswa'
+    );
+}
+
+// guru umum / semua
+else
+{
+    $target_siswa =
+    $this->db
+    ->where(
+        'status',
+        'aktif'
+    )
+    ->count_all_results(
+        'siswa'
+    );
+}
+
+
+// =========================
+// SUDAH VOTING
+// =========================
+
+$sudah =
+$this->db
+->where(
+    'id_kriteria',
+    $k->id_kriteria
+)
+->group_by(
+    'id_siswa'
+)
+->get('voting')
+->num_rows();
+
+
+// =========================
+// BELUM VOTING
+// =========================
+
+$belum =
+$target_siswa
+- $sudah;
+
+
+// =========================
+// PERSENTASE
+// =========================
+
+$persen =
+$target_siswa > 0
+?
+round(
+    (
+        $sudah
+        /
+        $target_siswa
+    ) * 100
+)
+:
+0;
+
+?>
+
+                <tr>
+
+                    <td>
+
+                        <b>
+
+                        <?= $k
+                        ->nama_kriteria; ?>
+
+                        </b>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                        class="badge badge-success p-2">
+
+                            <?= $sudah; ?>
+
+/
+
+<?= $target_siswa; ?>
+
+siswa
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <span
+                        class="badge badge-danger p-2">
+
+                            <?= $belum; ?>
+
+                            siswa
+
+                        </span>
+
+                    </td>
+
+                    <td>
+
+    <div class="d-flex
+    justify-content-between
+    mb-1">
+
+        <small
+        class="font-weight-bold
+        text-primary">
+
+            <?= $persen; ?>%
+
+        </small>
+
+        <small
+        class="text-muted">
+
+            <?= $sudah; ?>
+
+            /
+            
+            <?= $target_siswa; ?>
+
+        </small>
+
+    </div>
+
+    <div
+    class="progress"
+    style="
+    height:18px;
+    border-radius:20px;
+    background:#eaecf4;
+    ">
+
+        <div
+        class="progress-bar
+        bg-info
+        progress-bar-striped
+        progress-bar-animated"
+
+        role="progressbar"
+
+        style="
+        width:
+        <?= $persen; ?>%;
+        border-radius:20px;
+        font-size:11px;
+        font-weight:bold;
+        ">
+
+            <?= $persen; ?>%
+
+        </div>
+
+    </div>
+
+</td>
+
+                </tr>
+
+                <?php endforeach; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 
     <!-- leader sementara -->
 
