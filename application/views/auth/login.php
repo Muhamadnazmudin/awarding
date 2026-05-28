@@ -203,7 +203,22 @@
                     LOGIN
 
                 </button>
+<div class="text-center mt-3">
 
+    <small class="text-muted d-block mb-2">
+        Lupa NISN?
+    </small>
+
+    <a href="https://simsgtk.smkncilimus1.sch.id/index.php/cari_nisn"
+       target="_blank"
+       class="btn btn-outline-primary btn-sm rounded-pill">
+
+        <i class="fas fa-search mr-1"></i>
+        Cari NISN
+
+    </a>
+
+</div>
             </form>
 
             <div class="login-footer">
