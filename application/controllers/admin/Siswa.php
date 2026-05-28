@@ -23,51 +23,179 @@ class Siswa extends CI_Controller
         $this->load->library(
             'upload'
         );
+        $this->load->library(
+    'pagination'
+);
     }
 
     public function index()
-    {
-        $data['title'] =
-        'Data Siswa';
+{
+    $data['title'] =
+    'Data Siswa';
 
-        $data['siswa'] =
-        $this->Siswa_model
-        ->get_all();
+    // PAGINATION
+    $config['base_url'] =
+    site_url(
+        'admin/siswa/index'
+    );
 
-        $data['jurusan'] =
-        $this->Siswa_model
-        ->get_jurusan();
+    $config['total_rows'] =
+    $this->db
+    ->count_all(
+        'siswa'
+    );
 
-        $data['kelas'] =
-        $this->Siswa_model
-        ->get_kelas();
+    $config['per_page'] =
+    20;
 
-        $this->load->view(
-            'admin/template/header',
-            $data
-        );
+    $config['uri_segment'] =
+    4;
+    $config['first_link'] = 'Awal';
+$config['last_link'] = 'Akhir';
+$config['next_link'] = '>';
+$config['prev_link'] = '<';
 
-        $this->load->view(
-            'admin/template/sidebar'
-        );
+    // styling bootstrap
+    $config['full_tag_open'] =
+'<nav class="mt-4">
+<ul class="pagination justify-content-center">';
 
-        $this->load->view(
-            'admin/template/topbar'
-        );
+$config['full_tag_close'] =
+'</ul>
+</nav>';
 
-        $this->load->view(
-            'admin/siswa/index',
-            $data
-        );
+$config['first_link'] =
+'Awal';
 
-        $this->load->view(
-            'admin/template/footer'
-        );
+$config['last_link'] =
+'Akhir';
 
-        $this->load->view(
-            'admin/template/script'
-        );
-    }
+$config['next_link'] =
+'>';
+
+$config['prev_link'] =
+'<';
+
+$config['num_tag_open'] =
+'<li class="page-item">';
+
+$config['num_tag_close'] =
+'</li>';
+
+$config['cur_tag_open'] =
+'<li class="page-item active">
+<span class="page-link">';
+
+$config['cur_tag_close'] =
+'</span>
+</li>';
+
+$config['next_tag_open'] =
+'<li class="page-item">';
+
+$config['next_tag_close'] =
+'</li>';
+
+$config['prev_tag_open'] =
+'<li class="page-item">';
+
+$config['prev_tag_close'] =
+'</li>';
+
+$config['first_tag_open'] =
+'<li class="page-item">';
+
+$config['first_tag_close'] =
+'</li>';
+
+$config['last_tag_open'] =
+'<li class="page-item">';
+
+$config['last_tag_close'] =
+'</li>';
+
+$config['attributes'] =
+[
+    'class' => 'page-link'
+];
+
+    $this->pagination
+    ->initialize($config);
+
+    $page =
+$this->uri
+->segment(4)
+?
+$this->uri
+->segment(4)
+:
+0;
+
+    // siswa pagination
+    $data['siswa'] =
+    $this->db
+    ->select(
+        'siswa.*, jurusan.nama_jurusan, kelas.nama_kelas'
+    )
+    ->join(
+        'jurusan',
+        'jurusan.id_jurusan = siswa.id_jurusan',
+        'left'
+    )
+    ->join(
+        'kelas',
+        'kelas.id_kelas = siswa.id_kelas',
+        'left'
+    )
+    ->limit(
+        $config['per_page'],
+        $page
+    )
+    ->order_by(
+        'nama_siswa',
+        'ASC'
+    )
+    ->get('siswa')
+    ->result();
+
+    $data['pagination'] =
+    $this->pagination
+    ->create_links();
+
+    $data['jurusan'] =
+    $this->Siswa_model
+    ->get_jurusan();
+
+    $data['kelas'] =
+    $this->Siswa_model
+    ->get_kelas();
+
+    $this->load->view(
+        'admin/template/header',
+        $data
+    );
+
+    $this->load->view(
+        'admin/template/sidebar'
+    );
+
+    $this->load->view(
+        'admin/template/topbar'
+    );
+
+    $this->load->view(
+        'admin/siswa/index',
+        $data
+    );
+
+    $this->load->view(
+        'admin/template/footer'
+    );
+
+    $this->load->view(
+        'admin/template/script'
+    );
+}
 
     public function store()
 {

@@ -49,8 +49,8 @@ data-target="#modalImport">
         <div class="table-responsive">
 
             <table
-            class="table table-bordered"
-            id="dataTable">
+class="table table-bordered"
+id="tableSiswa">
 
                 <thead>
 
@@ -74,7 +74,13 @@ data-target="#modalImport">
                 <tbody>
 
                 <?php
-                $no = 1;
+                $no =
+$no =
+$this->uri->segment(4)
+?
+$this->uri->segment(4) + 1
+:
+1;
                 foreach($siswa as $s):
                 ?>
 
@@ -163,6 +169,11 @@ data-target="#modalImport">
                 </tbody>
 
             </table>
+            <div class="mt-3">
+
+    <?= $pagination; ?>
+
+</div>
 
         </div>
 

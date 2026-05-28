@@ -6,7 +6,6 @@
 
 <script src="<?= base_url('assets/sbadmin2/js/sb-admin-2.min.js'); ?>"></script>
 
-
 <script src="<?= base_url('assets/sbadmin2/vendor/datatables/jquery.dataTables.min.js'); ?>"></script>
 
 <script src="<?= base_url('assets/sbadmin2/vendor/datatables/dataTables.bootstrap4.min.js'); ?>"></script>
@@ -59,5 +58,6 @@ function resetPassword(id)
 }
 
 </script>
+
 </body>
 </html>
