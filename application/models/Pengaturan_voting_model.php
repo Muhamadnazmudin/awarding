@@ -62,4 +62,65 @@ class Pengaturan_voting_model extends CI_Model
                 );
         }
     }
+    public function auto_close_voting()
+{
+    $pengaturan =
+    $this->get_data();
+
+    if (!$pengaturan)
+    {
+        return;
+    }
+
+    $today =
+    date('Y-m-d');
+
+    $tanggal_mulai =
+    date(
+        'Y-m-d',
+        strtotime(
+            $pengaturan
+            ->tanggal_mulai
+        )
+    );
+
+    $tanggal_selesai =
+    date(
+        'Y-m-d',
+        strtotime(
+            $pengaturan
+            ->tanggal_selesai
+        )
+    );
+
+    // sebelum tanggal mulai = tutup
+    if ($today < $tanggal_mulai)
+    {
+        $this->db
+        ->update(
+            'pengaturan_voting',
+            [
+                'voting_status' =>
+                'tutup'
+            ]
+        );
+
+        return;
+    }
+
+    // lewat tanggal selesai = tutup
+    if ($today > $tanggal_selesai)
+    {
+        $this->db
+        ->update(
+            'pengaturan_voting',
+            [
+                'voting_status' =>
+                'tutup'
+            ]
+        );
+
+        return;
+    }
+}
 }
