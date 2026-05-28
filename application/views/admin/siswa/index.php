@@ -84,12 +84,24 @@ data-target="#modalImport">
 
                     <td width="80">
 
-                        <img
-                        src="<?= base_url('uploads/siswa/'.$s->foto); ?>"
-                        width="60"
-                        class="img-thumbnail">
+    <?php
+    $foto_default =
+    base_url(
+        'assets/img/default-user.png'
+    );
+    ?>
 
-                    </td>
+    <img
+    src="<?= !empty($s->foto)
+    ? base_url('uploads/siswa/'.$s->foto)
+    : $foto_default; ?>"
+    width="60"
+    height="60"
+    class="img-thumbnail rounded-circle"
+    style="object-fit:cover;"
+    onerror="this.src='<?= $foto_default; ?>'">
+
+</td>
 
                     <td><?= $s->nis; ?></td>
 
@@ -412,52 +424,6 @@ id="modalTambah">
 
 </div>
 
-
-
-<script>
-
-$('#jurusan').change(function(){
-
-    let jurusan =
-    $(this).val();
-
-    $('#kelas option')
-    .hide();
-
-    $('#kelas option:first')
-    .show();
-
-    $('#kelas option').each(function(){
-
-        if(
-            $(this)
-            .data('jurusan')
-            == jurusan
-        )
-        {
-            $(this)
-            .show();
-        }
-
-    });
-
-});
-
-function resetPassword(id)
-{
-    if(
-        confirm(
-            'Reset password siswa ke NISN?'
-        )
-    )
-    {
-        window.location =
-        '<?= site_url('admin/siswa/reset_password/'); ?>'
-        + id;
-    }
-}
-
-</script>
 <div
 class="modal fade"
 id="modalImport">

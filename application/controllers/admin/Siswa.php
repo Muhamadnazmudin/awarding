@@ -71,7 +71,7 @@ class Siswa extends CI_Controller
 
     public function store()
 {
-    $foto = 'default.png';
+    $foto = 'default-user.png';
 
     // upload foto
     if(
@@ -513,7 +513,7 @@ public function import()
             ),
 
             'foto' =>
-            'default.png',
+'default-user.png',
 
             'status' =>
             $status

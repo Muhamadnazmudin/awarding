@@ -19,12 +19,24 @@
 
                     <div class="text-center">
 
-                        <img
-                        src="<?= base_url('uploads/siswa/'.$siswa->foto); ?>"
-                        width="120"
-                        class="img-thumbnail rounded-circle mb-3 shadow-sm"
-                        style="object-fit:cover; height:120px;">
+                        <?php
 
+$foto_default =
+base_url(
+    'assets/img/default-user.png'
+);
+
+?>
+
+<img
+src="<?= !empty($siswa->foto)
+? base_url('uploads/siswa/'.$siswa->foto)
+: $foto_default; ?>"
+width="120"
+height="120"
+class="img-thumbnail rounded-circle mb-3 shadow-sm"
+style="object-fit:cover;"
+onerror="this.src='<?= $foto_default; ?>'">
                         <h5 class="font-weight-bold mb-1">
                             <?= $siswa->nama_siswa; ?>
                         </h5>
