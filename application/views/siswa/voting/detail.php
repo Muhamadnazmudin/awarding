@@ -101,18 +101,17 @@ method="post">
     name="id_guru"
     value="<?= $g->id_guru; ?>">
 
-                            <button
+<button
 type="button"
 class="btn btn-primary btn-block btn-lg"
 onclick="konfirmasiVote(
 <?= $kriteria->id_kriteria; ?>,
-<?= $g->id_guru; ?>
+<?= $g->id_guru; ?>,
+'<?= addslashes($g->nama_guru); ?>',
+'<?= $g->jk; ?>'
 )">
 
-    <i
-    class="fas fa-check-circle">
-
-    </i>
+    <i class="fas fa-check-circle"></i>
 
     PILIH GURU
 
@@ -180,16 +179,27 @@ onclick="konfirmasiVote(
 
 function konfirmasiVote(
     id_kriteria,
-    id_guru
+    id_guru,
+    nama_guru,
+    jk
 )
 {
+    let panggilan =
+        jk === 'L'
+        ? 'Bapak'
+        : 'Ibu';
+
     Swal.fire({
 
         title:
-        'Pilih Guru Ini?',
+        'Pilih ' +
+        panggilan +
+        ' ' +
+        nama_guru +
+        '?',
 
         html:
-        'Pilihan yang sudah disimpan <b>tidak dapat diubah</b> kecuali direset admin.',
+        'Pilihan yang sudah disimpan <b>tidak dapat diubah</b>.',
 
         icon:
         'question',
@@ -198,7 +208,8 @@ function konfirmasiVote(
         true,
 
         confirmButtonText:
-        'Ya, Pilih Guru',
+        'Ya, Pilih ' +
+        panggilan,
 
         cancelButtonText:
         'Batal',

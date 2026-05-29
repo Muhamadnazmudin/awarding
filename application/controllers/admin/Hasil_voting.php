@@ -274,17 +274,17 @@ class Hasil_voting extends CI_Controller
                 if($rank == 1)
                 {
                     $medal =
-                    'Juara 1';
+                    'Favorit 1';
                 }
                 elseif($rank == 2)
                 {
                     $medal =
-                    'Juara 2';
+                    'Favorit 2';
                 }
                 elseif($rank == 3)
                 {
                     $medal =
-                    'Juara 3';
+                    'Favorit 3';
                 }
                 else
                 {
