@@ -31,13 +31,20 @@ class Dashboard extends CI_Controller
 
         // data siswa
         $data['siswa'] =
-        $this->db
-        ->where(
-            'id_siswa',
-            $id_siswa
-        )
-        ->get('siswa')
-        ->row();
+$this->db
+->select('siswa.*, kelas.nama_kelas')
+->from('siswa')
+->join(
+    'kelas',
+    'kelas.id_kelas = siswa.id_kelas',
+    'left'
+)
+->where(
+    'siswa.id_siswa',
+    $id_siswa
+)
+->get()
+->row();
 
         // pengaturan voting
         $data['pengaturan'] =

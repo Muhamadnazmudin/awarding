@@ -45,6 +45,10 @@ onerror="this.src='<?= $foto_default; ?>'">
                             NISN:
                             <?= $siswa->nisn; ?>
                         </small>
+                        <small class="text-muted d-block mt-1">
+                            KELAS:
+                            <?= $siswa->nama_kelas; ?>
+</small>
 
                     </div>
 
